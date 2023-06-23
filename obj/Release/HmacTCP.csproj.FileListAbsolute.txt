@@ -1,0 +1,6 @@
+C:\Users\rpacreator3\source\repos\HmacTCP\bin\Release\HmacTCP.dll
+C:\Users\rpacreator3\source\repos\HmacTCP\bin\Release\HmacTCP.pdb
+C:\Users\rpacreator3\source\repos\HmacTCP\obj\Release\HmacTCP.csproj.CoreCompileInputs.cache
+C:\Users\rpacreator3\source\repos\HmacTCP\obj\Release\HmacTCP.dll
+C:\Users\rpacreator3\source\repos\HmacTCP\obj\Release\HmacTCP.pdb
+C:\Users\rpacreator3\source\repos\HmacTCP\obj\Release\HmacTCP.csprojAssemblyReference.cache
