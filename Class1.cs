@@ -58,6 +58,17 @@ namespace HmacTCP.HmacActivityBuild
         [Description("Input FingerPrint")]
         public InArgument<string> FingerPrint { get; set; }
 
+        [Category("Input")]
+        [DisplayName("Content-Type")]
+        [Description("Content-Type")]
+        public InArgument<string> ContentType { get; set; }
+
+        [Category("Input")]
+        [DisplayName("ResourcePath")]
+        [Description("ResourcePath")]
+        public InArgument<string> ResourcePath { get; set; }
+
+
         [Category("Output")]
         [DisplayName("Result")]
         [Description("Result")]
@@ -170,15 +181,21 @@ namespace HmacTCP.HmacActivityBuild
 
         protected override void EndExecute(AsyncCodeActivityContext context, IAsyncResult result)
         {
-            //context.SetValue(Result, result);
-            //context.SetValue(Status, status);
             var task = (Task<HttpResponseMessage>)result;
+
             try
             {
-                var t =  task.Result;
-                string s = t.Content.ReadAsStringAsync().Result;
-                context.SetValue(Result,s );
+                HttpResponseMessage t = task.Result;
 
+                string s = t.Content.ReadAsStringAsync().Result;
+                byte[] bytes = t.Content.ReadAsByteArrayAsync().Result; 
+               
+                var resourcePath = context.GetValue(ResourcePath);
+                if (resourcePath != "")
+                {
+                    File.WriteAllBytes(resourcePath, bytes);
+                }
+                context.SetValue(Result, s);
                 HttpStatusCode code = t.StatusCode;
                 context.SetValue(Status,(int) code);
             }
@@ -205,7 +222,7 @@ namespace HmacTCP.HmacActivityBuild
                 var apiRequestUri = context.GetValue(Url);
                 var fingerprint = context.GetValue(FingerPrint);
                 var data = context.GetValue(Data);
-
+                var contentType = context.GetValue(ContentType);
                 
                 //string result;
                 //int status;
@@ -244,10 +261,14 @@ namespace HmacTCP.HmacActivityBuild
                     ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
                     HttpClient client = new HttpClient();
-                    client.DefaultRequestHeaders.Add("Accept", "application/json");
+                    //client.DefaultRequestHeaders.Add("Accept", "application/json");
                     client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)");
                     client.DefaultRequestHeaders.Add("Authorization", hmacAuthorization);
-                    client.DefaultRequestHeaders.Add("ContentType", "application/json; charset=UTF-8");
+                    if (contentType == "")
+                    {
+                        contentType = "application/json; charset=UTF-8";
+                    }
+                    client.DefaultRequestHeaders.Add("ContentType", contentType);
                     client.DefaultRequestHeaders.Add("datakey", datakey);
                     client.DefaultRequestHeaders.Add("x-dapi-date", xDapiDate);
                     if (method.ToUpper().Equals("POST"))

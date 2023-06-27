@@ -3,3 +3,4 @@ C:\Users\rpacreator3\source\repos\HmacTCP\bin\Debug\HmacTCP.pdb
 C:\Users\rpacreator3\source\repos\HmacTCP\obj\Debug\HmacTCP.csproj.CoreCompileInputs.cache
 C:\Users\rpacreator3\source\repos\HmacTCP\obj\Debug\HmacTCP.dll
 C:\Users\rpacreator3\source\repos\HmacTCP\obj\Debug\HmacTCP.pdb
+C:\Users\rpacreator3\source\repos\HmacTCP\obj\Debug\HmacTCP.csprojAssemblyReference.cache
