@@ -58,10 +58,10 @@ namespace HmacTCP.HmacActivityBuild
         [Description("Input FingerPrint")]
         public InArgument<string> FingerPrint { get; set; }
 
-        [Category("Input")]
-        [DisplayName("Content-Type")]
-        [Description("Content-Type")]
-        public InArgument<string> ContentType { get; set; }
+        //[Category("Input")]
+        //[DisplayName("Content-Type")]
+        //[Description("Content-Type")]
+        //public InArgument<string> ContentType { get; set; }
 
         [Category("Input")]
         [DisplayName("ResourcePath")]
@@ -191,7 +191,7 @@ namespace HmacTCP.HmacActivityBuild
                 byte[] bytes = t.Content.ReadAsByteArrayAsync().Result; 
                
                 var resourcePath = context.GetValue(ResourcePath);
-                if (resourcePath != "")
+                if(!(String.IsNullOrEmpty(resourcePath) && String.IsNullOrWhiteSpace(resourcePath)))
                 {
                     File.WriteAllBytes(resourcePath, bytes);
                 }
@@ -222,7 +222,7 @@ namespace HmacTCP.HmacActivityBuild
                 var apiRequestUri = context.GetValue(Url);
                 var fingerprint = context.GetValue(FingerPrint);
                 var data = context.GetValue(Data);
-                var contentType = context.GetValue(ContentType);
+                //var contentType = context.GetValue(ContentType);
                 
                 //string result;
                 //int status;
@@ -264,11 +264,11 @@ namespace HmacTCP.HmacActivityBuild
                     //client.DefaultRequestHeaders.Add("Accept", "application/json");
                     client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)");
                     client.DefaultRequestHeaders.Add("Authorization", hmacAuthorization);
-                    if (contentType == "")
-                    {
-                        contentType = "application/json; charset=UTF-8";
-                    }
-                    client.DefaultRequestHeaders.Add("ContentType", contentType);
+                    //if (contentType == "")
+                    //{
+                    //    contentType = "application/json; charset=UTF-8";
+                    //}
+                    //client.DefaultRequestHeaders.Add("ContentType", contentType);
                     client.DefaultRequestHeaders.Add("datakey", datakey);
                     client.DefaultRequestHeaders.Add("x-dapi-date", xDapiDate);
                     if (method.ToUpper().Equals("POST"))
